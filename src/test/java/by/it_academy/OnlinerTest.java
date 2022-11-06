@@ -1,5 +1,6 @@
 package by.it_academy;
 
+import by.it_academy.constants.FailTestMessage;
 import by.it_academy.page_object.CatalogPage;
 import by.it_academy.page_object.HomePage;
 import com.codeborne.selenide.Configuration;
@@ -10,15 +11,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThatList;
+import static com.codeborne.selenide.CollectionCondition.*;
 
 public class OnlinerTest {
     public static final String SPACES_PATTERN = "[\s]+";
     public static final int EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS = 14;
-    public static final String EXPECTED_ACCESSORIES_DROPDOWN_ITEMS_DESCRIPTION_GOODS_CONTENT = "товар";
-    public static final String EXPECTED_ACCESSORIES_DROPDOWN_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT = "р.";
+    public static final String EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT = "товар";
+    public static final String EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT = "р.";
     public static final String COMPUTER_AND_NETWORK_CATEGORY_NAME = "Компьютеры";
     public static final String ACCESSORIES_CATEGORY_NAME = "Комплектующие";
+    public static final String BROWSER_CHROME = "chrome";
     public final List<String> expectedCatalogMenuItems = Arrays.asList(
             "Onlíner Prime",
             "Электроника",
@@ -37,26 +39,25 @@ public class OnlinerTest {
     @BeforeAll
     public static void setup() {
         ChromeDriverManager.chromedriver().setup();
-        Configuration.browser = "chrome";
+        Configuration.browser = BROWSER_CHROME;
     }
 
     @Test
     public void checkCatalogClassifierItemsName() {
         HomePage homePage = new HomePage();
-        List<String> catalogElements = homePage
-                .clickOnCatalogLink()
+        homePage.clickOnCatalogLink()
                 .getCatalogClassifierItems()
-                .texts();
-        assertThatList(catalogElements)
-                .containsExactlyElementsOf(expectedCatalogMenuItems);
+                .shouldHave(exactTexts(expectedCatalogMenuItems)
+                        .because(FailTestMessage.MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
     }
 
     @Test
     public void checkComputerAndNetworkAsideItemsName() {
         CatalogPage catalogPage = new CatalogPage();
         catalogPage.clickOnCatalogCategory(COMPUTER_AND_NETWORK_CATEGORY_NAME);
-        assertThatList(catalogPage.getCurrentCategoryItemsList().texts())
-                .containsAll(expectedComputerAndNetworksMenuItems);
+        catalogPage.getCurrentCategoryItemsList()
+                .shouldHave(containExactTextsCaseSensitive(expectedComputerAndNetworksMenuItems)
+                        .because(FailTestMessage.MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
     }
 
     @Test
@@ -64,19 +65,27 @@ public class OnlinerTest {
         CatalogPage catalogPage = new CatalogPage();
         catalogPage.clickOnCatalogCategory(COMPUTER_AND_NETWORK_CATEGORY_NAME);
         catalogPage.clickOnItemOfCurrentCategory(ACCESSORIES_CATEGORY_NAME);
-        List<String> dropDownItemsTitle = catalogPage
+        catalogPage
                 .getCategorySideItemsTitle(ACCESSORIES_CATEGORY_NAME)
-                .texts();
-        List<String> dropDownItemsDescription = catalogPage
-                .getCategorySideItemsDescription(ACCESSORIES_CATEGORY_NAME)
-                .texts();
-        assertThatList(dropDownItemsTitle)
-                .hasSize(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
-                .noneMatch(String::isEmpty)
-                .noneMatch(el -> el.matches(SPACES_PATTERN));
-        assertThatList(dropDownItemsDescription)
-                .hasSize(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
-                .allMatch(el -> el.contains(EXPECTED_ACCESSORIES_DROPDOWN_ITEMS_DESCRIPTION_GOODS_CONTENT))
-                .allMatch(el -> el.contains(EXPECTED_ACCESSORIES_DROPDOWN_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT));
+                .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
+                        .because(FailTestMessage.NUMBER_OF_ITEMS_NOT_EQUAL +
+                                EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
+                .shouldHave(noneMatch(FailTestMessage.ITEM_S_TITLE_NOT_EMPTY, el -> el.getText().isEmpty())
+                        .because(FailTestMessage.ITEM_S_TITLE_IS_EMPTY))
+                .shouldHave(noneMatch(FailTestMessage.ITEM_S_TITLE_NOT_MATCHES_SPACES,
+                        el -> el.getText().matches(SPACES_PATTERN))
+                        .because(FailTestMessage.ITEM_S_TITLE_MATCHES_SPACES));
+        catalogPage.getCategorySideItemsDescription(ACCESSORIES_CATEGORY_NAME)
+                .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
+                .shouldHave(allMatch(FailTestMessage.ITEM_S_DESCRIPTION_CONTAIN +
+                                EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT,
+                        el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT))
+                        .because(FailTestMessage.ITEM_S_DESCRIPTION_NOT_CONTAIN +
+                                EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT))
+                .shouldHave(allMatch(FailTestMessage.ITEM_S_DESCRIPTION_CONTAIN +
+                                EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT,
+                        el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT))
+                        .because(FailTestMessage.ITEM_S_DESCRIPTION_NOT_CONTAIN +
+                                EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT));
     }
 }
