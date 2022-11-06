@@ -1,6 +1,5 @@
 package by.it_academy;
 
-import by.it_academy.constants.FailTestMessage;
 import by.it_academy.page_object.CatalogPage;
 import by.it_academy.page_object.HomePage;
 import com.codeborne.selenide.Configuration;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static by.it_academy.constants.FailTestMessage.*;
 import static com.codeborne.selenide.CollectionCondition.*;
 
 public class OnlinerTest {
@@ -48,7 +48,7 @@ public class OnlinerTest {
         homePage.clickOnCatalogLink()
                 .getCatalogClassifierItems()
                 .shouldHave(exactTexts(expectedCatalogMenuItems)
-                        .because(FailTestMessage.MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
+                        .because(MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
     }
 
     @Test
@@ -57,7 +57,7 @@ public class OnlinerTest {
         catalogPage.clickOnCatalogCategory(COMPUTER_AND_NETWORK_CATEGORY_NAME);
         catalogPage.getCurrentCategoryItemsList()
                 .shouldHave(containExactTextsCaseSensitive(expectedComputerAndNetworksMenuItems)
-                        .because(FailTestMessage.MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
+                        .because(MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
     }
 
     @Test
@@ -68,24 +68,23 @@ public class OnlinerTest {
         catalogPage
                 .getCategorySideItemsTitle(ACCESSORIES_CATEGORY_NAME)
                 .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
-                        .because(FailTestMessage.NUMBER_OF_ITEMS_NOT_EQUAL +
-                                EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
-                .shouldHave(noneMatch(FailTestMessage.ITEM_S_TITLE_NOT_EMPTY, el -> el.getText().isEmpty())
-                        .because(FailTestMessage.ITEM_S_TITLE_IS_EMPTY))
-                .shouldHave(noneMatch(FailTestMessage.ITEM_S_TITLE_NOT_MATCHES_SPACES,
-                        el -> el.getText().matches(SPACES_PATTERN))
-                        .because(FailTestMessage.ITEM_S_TITLE_MATCHES_SPACES));
+                        .because(NUMBER_OF_ITEMS_NOT_EQUAL + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
+                .shouldHave(noneMatch(ITEM_TITLE_NOT_EMPTY, el -> el.getText().isEmpty())
+                        .because(ITEM_TITLE_IS_EMPTY))
+                .shouldHave(noneMatch(ITEM_TITLE_NOT_MATCHES_SPACES, el -> el.getText().matches(SPACES_PATTERN))
+                        .because(ITEM_TITLE_MATCHES_SPACES));
         catalogPage.getCategorySideItemsDescription(ACCESSORIES_CATEGORY_NAME)
-                .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
-                .shouldHave(allMatch(FailTestMessage.ITEM_S_DESCRIPTION_CONTAIN +
+                .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
+                        .because(NUMBER_OF_ITEMS_NOT_EQUAL + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
+                .shouldHave(allMatch(ITEM_DESCRIPTION_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT,
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT))
-                        .because(FailTestMessage.ITEM_S_DESCRIPTION_NOT_CONTAIN +
+                        .because(ITEM_DESCRIPTION_NOT_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT))
-                .shouldHave(allMatch(FailTestMessage.ITEM_S_DESCRIPTION_CONTAIN +
+                .shouldHave(allMatch(ITEM_DESCRIPTION_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT,
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT))
-                        .because(FailTestMessage.ITEM_S_DESCRIPTION_NOT_CONTAIN +
+                        .because(ITEM_DESCRIPTION_NOT_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT));
     }
 }
