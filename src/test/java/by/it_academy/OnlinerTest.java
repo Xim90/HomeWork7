@@ -69,22 +69,17 @@ public class OnlinerTest {
                 .getCategorySideItemsTitle(ACCESSORIES_CATEGORY_NAME)
                 .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
                         .because(NUMBER_OF_ITEMS_NOT_EQUAL + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
-                .shouldHave(noneMatch(ITEM_TITLE_NOT_EMPTY, el -> el.getText().isEmpty())
-                        .because(ITEM_TITLE_IS_EMPTY))
-                .shouldHave(noneMatch(ITEM_TITLE_NOT_MATCHES_SPACES, el -> el.getText().matches(SPACES_PATTERN))
-                        .because(ITEM_TITLE_MATCHES_SPACES));
-        catalogPage.getCategorySideItemsDescription(ACCESSORIES_CATEGORY_NAME)
+                .shouldHave(noneMatch(ITEM_TITLE_IS_EMPTY, el -> el.getText().isEmpty()))
+                .shouldHave(noneMatch(ITEM_TITLE_MATCHES_SPACES, el -> el.getText().matches(SPACES_PATTERN)));
+        catalogPage
+                .getCategorySideItemsDescription(ACCESSORIES_CATEGORY_NAME)
                 .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
                         .because(NUMBER_OF_ITEMS_NOT_EQUAL + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
-                .shouldHave(allMatch(ITEM_DESCRIPTION_CONTAIN +
+                .shouldHave(allMatch(ITEM_DESCRIPTION_NOT_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT,
-                        el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT))
-                        .because(ITEM_DESCRIPTION_NOT_CONTAIN +
-                                EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT))
-                .shouldHave(allMatch(ITEM_DESCRIPTION_CONTAIN +
+                        el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT)))
+                .shouldHave(allMatch(ITEM_DESCRIPTION_NOT_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT,
-                        el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT))
-                        .because(ITEM_DESCRIPTION_NOT_CONTAIN +
-                                EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT));
+                        el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT)));
     }
 }
