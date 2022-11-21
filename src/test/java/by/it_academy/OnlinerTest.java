@@ -2,9 +2,8 @@ package by.it_academy;
 
 import by.it_academy.page_object.CatalogPage;
 import by.it_academy.page_object.HomePage;
-import com.codeborne.selenide.Configuration;
-import io.github.bonigarcia.wdm.managers.ChromeDriverManager;
-import org.junit.jupiter.api.BeforeAll;
+import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -20,7 +19,6 @@ public class OnlinerTest {
     public static final String EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT = "р.";
     public static final String COMPUTER_AND_NETWORK_CATEGORY_NAME = "Компьютеры";
     public static final String ACCESSORIES_CATEGORY_NAME = "Комплектующие";
-    public static final String BROWSER_CHROME = "chrome";
     public final List<String> expectedCatalogMenuItems = Arrays.asList(
             "Onlíner Prime",
             "Электроника",
@@ -35,12 +33,6 @@ public class OnlinerTest {
             "Комплектующие",
             "Хранение данных",
             "Сетевое оборудование");
-
-    @BeforeAll
-    public static void setup() {
-        ChromeDriverManager.chromedriver().setup();
-        Configuration.browser = BROWSER_CHROME;
-    }
 
     @Test
     public void checkCatalogClassifierItemsName() {
@@ -81,5 +73,10 @@ public class OnlinerTest {
                 .shouldHave(allMatch(ITEM_DESCRIPTION_NOT_CONTAIN +
                                 EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT,
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT)));
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        Selenide.closeWebDriver();
     }
 }

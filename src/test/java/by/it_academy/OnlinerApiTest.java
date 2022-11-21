@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static by.it_academy.rest_api.endpoints.OnlinerEndpoints.*;
+import static by.it_academy.rest_api.endpoints.OnlinerEndpoints.SUSHI_CATALOG;
+import static by.it_academy.rest_api.endpoints.OnlinerEndpoints.SUSHI_CATALOG_WITH_FILTER_ROLLS;
 import static by.it_academy.rest_api.utils.GetRequestUtils.makeRequestAndGetResponseBody;
 import static org.assertj.core.api.Assertions.assertThatList;
 
