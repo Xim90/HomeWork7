@@ -13,6 +13,7 @@ public class MyWebDriverFactory {
             }
             case "edge": {
                 Configuration.browser = "edge";
+                Configuration.browserSize = "1024x768";
                 break;
             }
         }
