@@ -2,8 +2,9 @@ package by.it_academy;
 
 import by.it_academy.page_object.CatalogPage;
 import by.it_academy.page_object.HomePage;
-import com.codeborne.selenide.Selenide;
-import org.junit.jupiter.api.AfterAll;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -33,6 +34,14 @@ public class OnlinerTest {
             "Комплектующие",
             "Хранение данных",
             "Сетевое оборудование");
+
+    @BeforeAll
+    public static void setUp() {
+        SelenideLogger.addListener("AllureSelenide",
+                new AllureSelenide().screenshots(true).savePageSource(false));
+        System.setProperty("driverType","chrome");
+        MyWebDriverFactory.create();
+    }
 
     @Test
     public void checkCatalogClassifierItemsName() {
@@ -75,8 +84,8 @@ public class OnlinerTest {
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT)));
     }
 
-    @AfterAll
-    public static void tearDown() {
-        Selenide.closeWebDriver();
-    }
+//    @AfterAll
+//    public static void tearDown() {
+//        Selenide.closeWebDriver();
+//    }
 }
