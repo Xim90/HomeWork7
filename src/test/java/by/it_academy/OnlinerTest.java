@@ -37,9 +37,9 @@ public class OnlinerTest {
 
     @BeforeAll
     public static void setUp() {
+        MyWebDriverFactory.create(System.getProperty("driverType"));
         SelenideLogger.addListener("AllureSelenide",
                 new AllureSelenide().screenshots(true).savePageSource(false));;
-        MyWebDriverFactory.create();
     }
 
     @Test
