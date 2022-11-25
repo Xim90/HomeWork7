@@ -2,11 +2,14 @@ package by.it_academy;
 
 import by.it_academy.page_object.CatalogPage;
 import by.it_academy.page_object.HomePage;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,9 +40,13 @@ public class OnlinerTest {
 
     @BeforeAll
     public static void setUp() {
-        MyWebDriverFactory.create(System.getProperty("driverType"));
+        try {
+            MyWebDriverFactory.create(System.getProperty("customDriver"));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
         SelenideLogger.addListener("AllureSelenide",
-                new AllureSelenide().screenshots(true).savePageSource(false));;
+                new AllureSelenide().screenshots(true).savePageSource(false));
     }
 
     @Test
@@ -83,8 +90,8 @@ public class OnlinerTest {
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT)));
     }
 
-//    @AfterAll
-//    public static void tearDown() {
-//        Selenide.closeWebDriver();
-//    }
+    @AfterAll
+    public static void tearDown() {
+        Selenide.closeWebDriver();
+    }
 }
