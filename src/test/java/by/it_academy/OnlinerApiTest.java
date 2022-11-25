@@ -1,6 +1,5 @@
 package by.it_academy;
 
-
 import by.it_academy.constants.FailTestMessage;
 import by.it_academy.rest_api.model.Product;
 import io.restassured.response.ResponseBody;
