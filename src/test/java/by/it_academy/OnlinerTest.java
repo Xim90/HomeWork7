@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static by.it_academy.constants.FailTestMessage.*;
 import static com.codeborne.selenide.CollectionCondition.*;
 
 public class OnlinerTest {
@@ -41,7 +40,7 @@ public class OnlinerTest {
             "Сетевое оборудование");
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() {
         WebDriverSetter.setWebDriver(System.getProperty(DRIVER_TYPE));
         SelenideLogger.addListener(ALLURE_SELENIDE,
                 new AllureSelenide().screenshots(true).savePageSource(false));
@@ -53,7 +52,7 @@ public class OnlinerTest {
         homePage.clickOnCatalogLink()
                 .getCatalogClassifierItems()
                 .shouldHave(exactTexts(expectedCatalogMenuItems)
-                        .because(MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
+                        .because("Menu not contain expected list of item's name"));
     }
 
     @Test
@@ -62,7 +61,7 @@ public class OnlinerTest {
         catalogPage.clickOnCatalogCategory(COMPUTER_AND_NETWORK_CATEGORY_NAME);
         catalogPage.getCurrentCategoryItemsList()
                 .shouldHave(containExactTextsCaseSensitive(expectedComputerAndNetworksMenuItems)
-                        .because(MENU_NOT_CONTAIN_EXPECTED_LIST_OF_ITEM_S_NAME));
+                        .because("Menu not contain expected list of item's name"));
     }
 
     @Test
@@ -73,17 +72,19 @@ public class OnlinerTest {
         catalogPage
                 .getCategorySideItemsTitle(ACCESSORIES_CATEGORY_NAME)
                 .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
-                        .because(NUMBER_OF_ITEMS_NOT_EQUAL + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
-                .shouldHave(noneMatch(ITEM_TITLE_IS_EMPTY, el -> el.getText().isEmpty()))
-                .shouldHave(noneMatch(ITEM_TITLE_MATCHES_SPACES, el -> el.getText().matches(SPACES_PATTERN)));
+                        .because("Number of items not equal" + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
+                .shouldHave(noneMatch("Item's title is empty",
+                        el -> el.getText().isEmpty()))
+                .shouldHave(noneMatch("Item's title matches spaces",
+                        el -> el.getText().matches(SPACES_PATTERN)));
         catalogPage
                 .getCategorySideItemsDescription(ACCESSORIES_CATEGORY_NAME)
                 .shouldHave(size(EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS)
-                        .because(NUMBER_OF_ITEMS_NOT_EQUAL + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
-                .shouldHave(allMatch(ITEM_DESCRIPTION_NOT_CONTAIN +
+                        .because("Number of items not equal" + EXPECTED_NUMBER_ACCESSORIES_DROPDOWN_ITEMS))
+                .shouldHave(allMatch("Item's description not contain" +
                                 EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT,
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_GOODS_CONTENT)))
-                .shouldHave(allMatch(ITEM_DESCRIPTION_NOT_CONTAIN +
+                .shouldHave(allMatch("Item's description not contain" +
                                 EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT,
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT)));
     }

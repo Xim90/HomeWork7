@@ -1,4 +1,4 @@
-package by.it_academy.rest_api.utils;
+package by.it_academy.rest_api.service;
 
 import com.google.common.collect.ImmutableMap;
 import io.restassured.response.ResponseBody;
@@ -6,14 +6,13 @@ import io.restassured.response.ResponseBody;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static org.apache.http.HttpStatus.SC_OK;
 
-public class GetRequestUtils {
-
-    public static final int STATUS_CODE_OK = 200;
+public class GetOnlinerRequest {
     public static final String HOST = "Host";
     public static final String CATALOG_ONLINER_BY = "catalog.onliner.by";
 
-    private GetRequestUtils() {
+    private GetOnlinerRequest() {
     }
 
     public static ResponseBody makeRequestAndGetResponseBody(String endpoint) {
@@ -22,7 +21,7 @@ public class GetRequestUtils {
                 .when()
                 .get(endpoint)
                 .then()
-                .statusCode(STATUS_CODE_OK)
+                .statusCode(SC_OK)
                 .extract()
                 .response()
                 .getBody();
