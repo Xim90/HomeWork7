@@ -8,8 +8,8 @@ import static com.codeborne.selenide.Selenide.open;
 import static java.time.Duration.ofSeconds;
 
 public class HomePage extends BasePage {
-    public static final String ONLINER_URL = "https://www.onliner.by/";
-    public static final SelenideElement OnlinerCatalogLink =
+    private static final String ONLINER_URL = "https://www.onliner.by/";
+    private static final SelenideElement OnlinerCatalogLink =
             $x("//*[@class='b-top-menu']//a[contains(@href,'catalog')]");
 
     public HomePage() {

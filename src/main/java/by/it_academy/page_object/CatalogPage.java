@@ -8,19 +8,19 @@ import static java.lang.String.format;
 import static java.time.Duration.ofSeconds;
 
 public class CatalogPage extends BasePage {
-    public static final String CATALOG_ONLINER_URL = "https://catalog.onliner.by/";
-    public static final String CATALOG_CLASSIFIER_ITEM_LINK_PATTERN = "//li[.//span[contains(text(),'%s')]]";
-    public static final String CATALOG_ACCESSORIES_DROPDOWN_ITEMS_TITLE_PATTERN =
+    private static final String CATALOG_ONLINER_URL = "https://catalog.onliner.by/";
+    private static final String CATALOG_CLASSIFIER_ITEM_LINK_PATTERN = "//li[.//span[contains(text(),'%s')]]";
+    private static final String CATALOG_ACCESSORIES_DROPDOWN_ITEMS_TITLE_PATTERN =
             "//div[contains(@style,'block')]//div[./div[contains(text(),'%s')]]" +
                     "//span[contains(@class,'title')]";
-    public static final String CATALOG_ACCESSORIES_DROPDOWN_ITEMS_DESCRIPTION_PATTERN =
+    private static final String CATALOG_ACCESSORIES_DROPDOWN_ITEMS_DESCRIPTION_PATTERN =
             "//div[contains(@style,'block')]//div[./div[contains(text(),'%s')]]" +
                     "//span[contains(@class,'description')]";
-    public static final String CATALOG_CURRENT_CATEGORY_ASIDE_ITEM_LINK_PATTERN =
+    private static final String CATALOG_CURRENT_CATEGORY_ASIDE_ITEM_LINK_PATTERN =
             "//div[contains(@style,'block')]//div[contains(text(),'%s')]";
-    public static final ElementsCollection CatalogClassifierItems =
+    private static final ElementsCollection CatalogClassifierItems =
             $$x("//li[.//span[contains(@class,'icon_id')]]//span[contains(@class,'wrapper')]");
-    public static final ElementsCollection CurrentCategoryItemsList =
+    private static final ElementsCollection CurrentCategoryItemsList =
             $$x("//div[contains(@style,'block')]//div[contains(@class,'aside-title')]");
 
     public CatalogPage() {
