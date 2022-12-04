@@ -3,12 +3,14 @@ package by.it_academy;
 import by.it_academy.page_object.CatalogPage;
 import by.it_academy.page_object.HomePage;
 import by.it_academy.util.WebDriverSetter;
-import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.*;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -87,6 +89,18 @@ public class OnlinerTest {
                 .shouldHave(allMatch("Item's description not contain" +
                                 EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT,
                         el -> el.getText().contains(EXPECTED_ITEMS_DESCRIPTION_MIN_PRICE_CONTENT)));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"intel", "redmi", "stels"})
+    public void checkSearchResultNames(String keyword) {
+        HomePage homePage = new HomePage();
+        homePage
+                .clearSearchBarAndSendKeys(keyword)
+                .switchToSearchFrame()
+                .getSearchResultNames()
+                .should(allMatch("Goods name should contain keyword",
+                        el -> el.getText().toLowerCase().contains(keyword)));
     }
 
     @AfterAll
